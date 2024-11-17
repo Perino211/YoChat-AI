@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "316845927247",
+    "project_id": "yo-chat-ai",
+    "storage_bucket": "yo-chat-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316845927247:android:bd635380c608549e7b733a",
+        "android_client_info": {
+          "package_name": "com.example.yo_chat_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE6wPQ-fri6GLfPugPbJmFAYLpmebfN3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
