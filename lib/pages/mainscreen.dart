@@ -4,11 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:google_sign_in/google_sign_in.dart'; // Import Google Sign-In package
 import 'package:yo_chat_ai/components/message.dart';
 import 'package:yo_chat_ai/pages/login.dart';
 
 class Mainscreen extends StatefulWidget {
-  Mainscreen({super.key});
+  const Mainscreen({super.key});
 
   @override
   State<Mainscreen> createState() => _MainscreenState();
@@ -17,25 +18,50 @@ class Mainscreen extends StatefulWidget {
 class _MainscreenState extends State<Mainscreen> {
   final queryController = TextEditingController();
 
-  //initializing message list
+  // Initializing message list
   final List<Message> _messages = [
     Message(text: "Hi", isUser: true),
-    // Message(text: "Hello, How are you today?", isUser: false),
-    // Message(text: "I'm fine. Maybe you", isUser: true),
-    // Message(text: "Was just checking", isUser: true),
-    // Message(text: "It's okey, I appreciate", isUser: false),
-    // Message(text: "Hi", isUser: true),
-    // Message(text: "Hello, How are you today?", isUser: false),
-    // Message(text: "I'm fine. Maybe you", isUser: true),
-    // Message(text: "Was just checking", isUser: true),
-    // Message(text: "It's okey, I appreciate", isUser: false),
-    // Message(text: "Hi", isUser: true),
-    // Message(text: "Hello, How are you today?", isUser: false),
-    // Message(text: "I'm fine. Maybe you", isUser: true),
-    // Message(text: "Was just checking", isUser: true),
-    // Message(text: "It's okey, I appreciate", isUser: false),
   ];
 
+  // Google Sign-In instance
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  // Input controller
+  final inputController = TextEditingController();
+
+  // Function to log user out
+  void logoutUser() async {
+    await FirebaseAuth.instance.signOut();
+    await _googleSignIn.signOut(); // Ensure Google account is signed out
+  }
+
+  // Function to handle Google Sign-In
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in
+        return null;
+      }
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in with Firebase using the Google credential
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      print("Error during Google Sign-In: $e");
+      return null;
+    }
+  }
+
+  // Call Gemini AI
   callGeminiAI() async {
     try {
       if (inputController.text.isNotEmpty) {
@@ -52,19 +78,10 @@ class _MainscreenState extends State<Mainscreen> {
       });
       inputController.clear();
     } catch (e) {
-      print("Erroe $e");
+      print("Error $e");
     }
   }
 
-  //input controller
-  final inputController = TextEditingController();
-
-  //function to log user out
-  void logoutUser() async {
-    await FirebaseAuth.instance.signOut();
-  }
-
-  // void onLogout() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,13 +149,13 @@ class _MainscreenState extends State<Mainscreen> {
                                     : Colors.grey[300],
                                 borderRadius: message.isUser
                                     ? BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20))
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20))
                                     : BorderRadius.only(
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20))),
+                                    topRight: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20))),
                             child: Text(
                               message.text,
                               style: TextStyle(
@@ -161,12 +178,12 @@ class _MainscreenState extends State<Mainscreen> {
                   children: [
                     Expanded(
                         child: TextField(
-                      controller: inputController,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          hintText: "What's your query..."),
-                    )),
+                          controller: inputController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                              hintText: "Ask YoAi..."),
+                        )),
                     IconButton(onPressed: callGeminiAI, icon: Icon(Icons.send))
                   ],
                 ),

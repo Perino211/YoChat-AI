@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "316845927247",
-    "project_id": "yo-chat-ai",
-    "storage_bucket": "yo-chat-ai.firebasestorage.app"
+    "project_number": "526745278335",
+    "project_id": "authenticationapp-4269d",
+    "storage_bucket": "authenticationapp-4269d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:316845927247:android:bd635380c608549e7b733a",
+        "mobilesdk_app_id": "1:526745278335:android:fc64c3dbc041ea942aac4a",
         "android_client_info": {
           "package_name": "com.example.yo_chat_ai"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "526745278335-0qr7jpr1g2qj7nahiopvdksb00jou64n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yo_chat_ai",
+            "certificate_hash": "a83c108bd7753071da321877e8f453eb9633b9d1"
+          }
+        },
+        {
+          "client_id": "526745278335-bpo2ueg9fejvav68enhuk5rhls9ujbun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAE6wPQ-fri6GLfPugPbJmFAYLpmebfN3A"
+          "current_key": "AIzaSyBYV5sK7alKEdhi4XEC_D3wBTEeAGrIeUI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526745278335-bpo2ueg9fejvav68enhuk5rhls9ujbun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
