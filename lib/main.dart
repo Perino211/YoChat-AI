@@ -9,6 +9,8 @@ void main() async {
   await dotenv.load(fileName: "assets/key.env");
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  //adding firebase auth configurations
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MainApp());
 }
