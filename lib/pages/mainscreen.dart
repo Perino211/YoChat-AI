@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:google_sign_in/google_sign_in.dart'; // Import Google Sign-In package
 import 'package:yo_chat_ai/components/message.dart';
 import 'package:yo_chat_ai/pages/login.dart';
 
@@ -18,50 +17,25 @@ class Mainscreen extends StatefulWidget {
 class _MainscreenState extends State<Mainscreen> {
   final queryController = TextEditingController();
 
-  // Initializing message list
+  //initializing message list
   final List<Message> _messages = [
     Message(text: "Hi", isUser: true),
+    // Message(text: "Hello, How are you today?", isUser: false),
+    // Message(text: "I'm fine. Maybe you", isUser: true),
+    // Message(text: "Was just checking", isUser: true),
+    // Message(text: "It's okay, I appreciate", isUser: false),
+    // Message(text: "Hi", isUser: true),
+    // Message(text: "Hello, How are you today?", isUser: false),
+    // Message(text: "I'm fine. Maybe you", isUser: true),
+    // Message(text: "Was just checking", isUser: true),
+    // Message(text: "It's okay, I appreciate", isUser: false),
+    // Message(text: "Hi", isUser: true),
+    // Message(text: "Hello, How are you today?", isUser: false),
+    // Message(text: "I'm fine. Maybe you", isUser: true),
+    // Message(text: "Was just checking", isUser: true),
+    // Message(text: "It's okay, I appreciate", isUser: false),
   ];
 
-  // Google Sign-In instance
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  // Input controller
-  final inputController = TextEditingController();
-
-  // Function to log user out
-  void logoutUser() async {
-    await FirebaseAuth.instance.signOut();
-    await _googleSignIn.signOut(); // Ensure Google account is signed out
-  }
-
-  // Function to handle Google Sign-In
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        // User canceled the sign-in
-        return null;
-      }
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in with Firebase using the Google credential
-      final UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e) {
-      print("Error during Google Sign-In: $e");
-      return null;
-    }
-  }
-
-  // Call Gemini AI
   callGeminiAI() async {
     try {
       if (inputController.text.isNotEmpty) {
@@ -82,6 +56,15 @@ class _MainscreenState extends State<Mainscreen> {
     }
   }
 
+  //input controller
+  final inputController = TextEditingController();
+
+  //function to log user out
+  void logoutUser() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  // void onLogout() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,6 +173,8 @@ class _MainscreenState extends State<Mainscreen> {
               ),
             )
           ],
-        ));
+
+        )
+    );
   }
 }
